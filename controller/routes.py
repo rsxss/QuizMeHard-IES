@@ -20,6 +20,7 @@ class DRCC():
 	"""
 		execution_data: {
 			code: string,
+			lang: string,
 			comment: string
 		}
 	"""
@@ -28,13 +29,14 @@ class DRCC():
 		try:
 			if request.method == "POST":
 				req_data = request.get_json()
-				print("POST DATA:",req_data)
+				# print("POST DATA:",req_data)
 				execution_data = {
 					'code': req_data.get('code'),
 					'lang': req_data.get('lang'),
 					'comment': req_data.get('comment')
 				}; 
 				executor = ExecutionLang.__dict__[execution_data.get('lang').upper()](execution_data)
+				executor.execute()
 				response = {
 					'status': 200
 				}
@@ -42,14 +44,9 @@ class DRCC():
 		except:
 			response = {
 				'status': 500,
-				'error': traceback.format_exc(1)
+				'error': traceback.format_exc(0)
 			}
 			return abort(jsonify(**response)), 500
-
-
-
-
-
 		
 
 def routes():
