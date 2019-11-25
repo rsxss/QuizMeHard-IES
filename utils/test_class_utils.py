@@ -4,7 +4,7 @@ class InputUtil():
 
 	def __init__(self, test_class):
 		self.__test_class = test_class
-		self.__test_results = {'case_results': {}}
+		self.__test_results = {'case_results': {}, 'total_score': 0}
 		self.__test_case_counter = 0
 
 	@classmethod
@@ -32,7 +32,7 @@ class InputUtil():
 				self.__test_results['case_results'][f'case_{case_no}'] = {
 					'score': score,
 					'result': True
-				}
+				}; self.__test_results['total_score'] += score
 			except AssertionError:
 				self.__test_results['case_results'][f'case_{case_no}'] = {
 					'score': score,

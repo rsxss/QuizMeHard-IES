@@ -64,7 +64,7 @@ class PythonExecutionModel(ExecutionModel):
 		suite = unittest.TestLoader().loadTestsFromTestCase(exec_variables.get('locals')['__InputTestCase__'])
 		#suite = unittest.defaultTestLoader.loadTestsFromTestCase(exec_variables.get('locals')['__InputTestCase__'])
 		test_result = unittest.TextTestRunner(verbosity=0).run(suite)
-		return __utils__.results()['case_results']
+		return __utils__.results()
 		#print(exec_variables.get('locals'))
 		# return {
 		# 	'results': exec_variables.get('locals')['results']	

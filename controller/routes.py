@@ -36,8 +36,8 @@ class DRCC():
 					'comment': req_data.get('comment')
 				}; 
 				executor = ExecutionLang.__dict__[execution_data.get('lang').upper()](execution_data)
-				executor.execute()
 				response = {
+					'results': executor.execute(),
 					'status': 200
 				}
 				return jsonify(**response), 200
