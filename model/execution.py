@@ -42,8 +42,34 @@ class PythonExecutionModel(ExecutionModel):
 		super().__init__(execution_data)
 
 	def execute(self):
-		local_variables = {}
+		mbt = import_module('model.base_test')
+		utcu = import_module('utils.test_class_utils')
+		unittest = import_module('unittest')
+		__base__ = mbt.InputTestCase
+		__utils__ = utcu.InputUtil(__base__)
+		exec_variables = {
+			'globals': {
+				
+			},
+			'locals':{
+				f'__{mbt.InputTestCase.__name__}__': __base__,
+				'__utils__': __utils__,
+				'assert_equal': __utils__.assert_equal,
+				'unittest': unittest
+			}
+		}
 		code_object = compile(self.code, 'code', 'exec')
-		exec(code_object, globals(), local_variables)
-		print(local_variables)
+		execution = exec(code_object, exec_variables.get('globals'), exec_variables.get('locals'))
+		#print(dir(exec_variables.get('locals')['__InputTestCase__']))
+		suite = unittest.TestLoader().loadTestsFromTestCase(exec_variables.get('locals')['__InputTestCase__'])
+		#suite = unittest.defaultTestLoader.loadTestsFromTestCase(exec_variables.get('locals')['__InputTestCase__'])
+		test_result = unittest.TextTestRunner(verbosity=0).run(suite)
+		return __utils__.results()['case_results']
+		#print(exec_variables.get('locals'))
+		# return {
+		# 	'results': exec_variables.get('locals')['results']	
+		# }
 
+# def assert_equal(x, y):
+# 	func = lambda self: self.assertEqual(x, y)
+# 	addTestByString(testClass, f'test_case_{count}', func)
