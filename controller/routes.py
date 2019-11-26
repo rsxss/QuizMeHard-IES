@@ -44,7 +44,7 @@ class DRCC():
 		except:
 			response = {
 				'status': 500,
-				'error': traceback.format_exc(3)
+				'error': traceback.format_exc(-1)
 			}
 			return abort(jsonify(**response)), 500
 		
